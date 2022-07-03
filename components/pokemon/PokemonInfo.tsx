@@ -59,7 +59,7 @@ export const PokemonInfo: FC<Props> = ({
           <Card.Body>
             <Card.Image
               src={
-                pokemon.sprites.other?.dream_world.front_default ||
+                pokemon.sprites.other?.["official-artwork"].front_default ||
                 "no-image.png"
               }
               alt="pokemon.name"

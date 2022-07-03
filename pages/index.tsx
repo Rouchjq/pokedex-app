@@ -36,9 +36,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const pokemons: SmallPokemon[] = data.results.map((pokemon, i) => ({
     ...pokemon, //name, url
     id: i + 1,
-    img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${
+    img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
       i + 1
-    }.svg`,
+    }.png`,
   }));
   //asi se escribe un .map sin return, el ultimo parentesis de adentro hace de un "return"
   return {
