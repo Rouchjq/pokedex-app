@@ -9,24 +9,29 @@ import {
   Progress,
 } from "@nextui-org/react";
 import { Pokemon } from "../../interfaces";
+import { Ability } from "../../interfaces/pokemon-info";
 
 interface Props {
   pokemon: Pokemon;
+  onToggleFavorite: () => void;
+  isInfavorites: boolean;
 }
 
-interface StatsColors {
-  hp: string;
-  attack: string;
-  defense: string;
-  speed: string;
-  ["special-attack"]: string;
-  ["special-defense"]: string;
-}
+// interface StatsColors {
+//   hp: string;
+//   attack: string;
+//   defense: string;
+//   speed: string;
+//   ["special-attack"]: string;
+//   ["special-defense"]: string;
+// }
 
-export const PokemonInfo: FC<Props> = ({ pokemon }) => {
-  console.log(pokemon.moves);
-
-  const colors: StatsColors = {
+export const PokemonInfo: FC<Props> = ({
+  pokemon,
+  onToggleFavorite,
+  isInfavorites,
+}) => {
+  const colors: { [key: string]: any } = {
     hp: "error",
     attack: "success",
     defense: "primary",
@@ -78,8 +83,8 @@ export const PokemonInfo: FC<Props> = ({ pokemon }) => {
             <Text h1 transform="capitalize">
               {pokemon.name}
             </Text>
-            <Button color="gradient" ghost>
-              Guardar en favoritos
+            <Button color="gradient" onPress={onToggleFavorite}>
+              {isInfavorites ? "Quitar de favoritos" : "Guardar en favoritos"}
             </Button>
           </Card.Header>
           <Card.Body>
@@ -187,7 +192,7 @@ export const PokemonInfo: FC<Props> = ({ pokemon }) => {
         >
           <Card.Header>
             <Text h2 transform="capitalize">
-              Moves
+              Abilities
             </Text>
           </Card.Header>
           <Card.Divider />
@@ -196,11 +201,10 @@ export const PokemonInfo: FC<Props> = ({ pokemon }) => {
               "&::-webkit-scrollbar": { display: "none" },
             }}
           >
-            {pokemon.moves.map((move, i) => {
-              console.log(move);
+            {pokemon.abilities.map((ability, i) => {
               return (
                 <Container
-                  key={move.move.name}
+                  key={ability.ability.name}
                   css={{
                     margin: "20px 0",
                     border: "solid 1px $gray500",
@@ -209,7 +213,7 @@ export const PokemonInfo: FC<Props> = ({ pokemon }) => {
                   }}
                 >
                   <Text size={20} transform="capitalize">
-                    {move.move.name}
+                    {ability.ability.name}
                   </Text>
                 </Container>
               );

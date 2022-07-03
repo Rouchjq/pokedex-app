@@ -30,6 +30,7 @@ export default Home;
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const resp = await pokeApi.get<PokemonListResponse>("/pokemon?limit=151");
   const { data } = resp;
+
   // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg
 
   const pokemons: SmallPokemon[] = data.results.map((pokemon, i) => ({
