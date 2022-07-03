@@ -38,7 +38,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     id: i + 1,
     img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
       i + 1
-    }.png`,
+    }.png`, //imagen del arte oficial
   }));
   //asi se escribe un .map sin return, el ultimo parentesis de adentro hace de un "return"
   return {
