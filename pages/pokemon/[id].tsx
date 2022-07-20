@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
-import { NextPage, GetStaticPaths, GetStaticProps } from "next";
-import confetti from "canvas-confetti";
+import { NextPage, GetStaticPaths, GetStaticProps } from 'next';
+import confetti from 'canvas-confetti';
 
-import { Layout } from "../../components/layouts";
-import { getPokemonInfo, localFavorites } from "../../utils";
-import { pokeApi } from "../../api";
-import { PokemonInfo } from "../../components/pokemon";
-import { Pokemon } from "../../interfaces";
+import { Layout } from '../../components/layouts';
+import { getPokemonInfo, localFavorites } from '../../utils';
+import { pokeApi } from '../../api';
+import { PokemonInfo } from '../../components/pokemon';
+import { Pokemon } from '../../interfaces';
 interface Props {
   pokemon: Pokemon;
 }
@@ -62,7 +62,8 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
   );
   return {
     paths: pokemons151.map((id) => ({ params: { id } })),
-    fallback: false,
+    // fallback: false, //Hace que muestre el 404 si no encuentra la pagina id
+    fallback: 'blocking', //permite que pase la pagina si no encuentra la pagina id
 
     //asi funciona!!!
     // paths: [
@@ -87,10 +88,19 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   //Obtengo el Id del pokemon de los parametros del URL utilizando el contexto (ctx)
   const { id } = ctx.params as { id: string };
-
+  const pokemon = await getPokemonInfo(id);
+  if (!pokemon) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
       pokemon: await getPokemonInfo(id),
     },
+    revalidate: 10, //Genera el ISR para la pagina
   };
 };

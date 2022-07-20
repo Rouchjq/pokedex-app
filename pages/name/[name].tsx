@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
-import { NextPage, GetStaticPaths, GetStaticProps } from "next";
-import confetti from "canvas-confetti";
+import { NextPage, GetStaticPaths, GetStaticProps } from 'next';
+import confetti from 'canvas-confetti';
 
-import { Layout } from "../../components/layouts";
-import { getPokemonInfo, localFavorites } from "../../utils";
-import { pokeApi } from "../../api";
-import { PokemonInfo } from "../../components/pokemon";
-import { Pokemon } from "../../interfaces";
-import { Sprites } from "../../interfaces/pokemon-info";
+import { Layout } from '../../components/layouts';
+import { getPokemonInfo, localFavorites } from '../../utils';
+import { pokeApi } from '../../api';
+import { PokemonInfo } from '../../components/pokemon';
+import { Pokemon } from '../../interfaces';
+import { Sprites } from '../../interfaces/pokemon-info';
 import {
   PokemonListResponse,
   SmallPokemon,
-} from "../../interfaces/pokemon-list";
+} from '../../interfaces/pokemon-list';
 
 interface Props {
   pokemon: Pokemon;
@@ -72,10 +72,18 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { name } = ctx.params as { name: string };
   const pokemon = await getPokemonInfo(name);
-
+  if (!pokemon) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
       pokemon,
     },
+    revalidate: 10,
   };
 };
